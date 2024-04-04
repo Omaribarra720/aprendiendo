@@ -14,16 +14,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.Timer;
+
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import javax.swing.JLabel;
+import java.awt.Font;
 
-public class Numbers extends JFrame {
+public class Numbers extends JFrame implements ActionListener{
 	private static int[] rand = new int[15];;
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JButton btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btn10,btn11,btn12,btn13,btn14,btn15,btn16,btnReinicio;
 	private JButton[] botones ;
 	private String[] arregloNumeros;
+	private JLabel lblTiempo;
+	private Timer timer;
+	private int segundosTranscurridos;
 
 	/**
 	 * Launch the application.
@@ -278,11 +285,70 @@ public class Numbers extends JFrame {
 				reiniciar();
 			}
 		});
-		btnReinicio.setBounds(161, 21, 142, 37);
+		btnReinicio.setBounds(352, 21, 100, 37);
 		panel_1.add(btnReinicio);
+
+		JButton btnPausa = new JButton("Pausa");
+		
+		btnPausa.setBounds(242, 21, 100, 37);
+		btnPausa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btn1.setEnabled(false);
+				for (int i = 0; i < botones.length; i++) {
+					botones[i].setEnabled(false);
+				}
+				
+			}
+		});
+		panel_1.add(btnPausa);
+
+		JButton btnReanudar = new JButton("Reanudar");
+		btnReanudar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < botones.length; i++) {
+					botones[i].setEnabled(true);
+				}
+			}
+		});
+		
+		btnReanudar.setBounds(132, 21, 100, 37);
+		panel_1.add(btnReanudar);
+
+		lblTiempo = new JLabel("00:00:00");
+		lblTiempo.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblTiempo.setBounds(10, 26, 100, 26);
+		panel_1.add(lblTiempo);
+
+
+
+
+		// Crear el JLabel para mostrar el tiempo transcurrido
+
+		
+		// Inicializar el temporizador
+		/*
+		segundosTranscurridos = 0;
+		timer = new Timer(1000, this);
+		*/
+		
+	
+		
+		
+		
+		
+
+
+
+
+
+
+
+
+
+
 	}
 	public void movimiento(JButton btnClick) {
-		
+
 
 
 		//Que boton se tomo
@@ -321,39 +387,51 @@ public class Numbers extends JFrame {
 			btnClick.setText(btnCambio.getText());
 			btnCambio.setText(aux);
 		}
-		
 
-		
+
+
 	}
 	public void ganador() {
 		if(btn1.getText().equals("1")&&btn2.getText().equals("2")&&btn3.getText().equals("3")&&btn4.getText().equals("4")&&btn5.getText().equals("5")&&
 				btn6.getText().equals("6")&&btn7.getText().equals("7")&&btn1.getText().equals("8")&&btn1.getText().equals("8")&&btn9.getText().equals("9")&&
 				btn10.getText().equals("10")&&btn11.getText().equals("11")&&btn12.getText().equals("12")&&btn13.getText().equals("13")&&btn14.getText().equals("14")&&
 				btn15.getText().equals("15")&&btn16.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "Ganaste", "Inane warning",JOptionPane.ERROR_MESSAGE);
-				
-			
-			
+			JOptionPane.showMessageDialog(null, "Ganaste", "Inane warning",JOptionPane.ERROR_MESSAGE);
+
+
+
 		}
-		
+
 	}
 	private void reiniciar() {
-	//Arreglo de strings
-		
-		
+		//Arreglo de strings
+
+
 		// Revolver los números
-	    List<String> lista = Arrays.asList(arregloNumeros);
-	    Collections.shuffle(lista);
-	    String[] arregloRevuelto = lista.toArray(new String[0]);
+		List<String> lista = Arrays.asList(arregloNumeros);
+		Collections.shuffle(lista);
+		String[] arregloRevuelto = lista.toArray(new String[0]);
 
-	    // Asignar los números a los botones
-	    for (int i = 0; i < botones.length; i++) {
-	        botones[i].setText(arregloRevuelto[i]);
-	    }
+		// Asignar los números a los botones
+		for (int i = 0; i < botones.length; i++) {
+			botones[i].setText(arregloRevuelto[i]);
+		}
 
-			
-		
-		
+
+
+
 	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// Incrementar los segundos transcurridos
+		segundosTranscurridos++;
 
+		// Calcular horas, minutos y segundos
+		int horas = segundosTranscurridos / 3600;
+		int minutos = (segundosTranscurridos % 3600) / 60;
+		int segundos = segundosTranscurridos % 60;
+
+		// Actualizar el texto del JLabel
+		lblTiempo.setText(String.format("%02d:%02d:%02d", horas, minutos, segundos));
+	}
 }
